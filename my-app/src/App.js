@@ -20,7 +20,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       images:[],
-      loading: true,
+      loading: true, 
       submition: false
     };
     this.stateHandler = this.stateHandler.bind(this);
@@ -36,7 +36,7 @@ componentDidMount(){
 //Passed as a callback to search component. This callback modifies state of main component when fetching from the search component.
  stateHandler(searchKey){
   let stateClone;
-  this.setState({submition:true,loading:true});
+  this.setState({submition:true,loading:true}); //set the LOADING spinner to true when a search keyword is submitted
 //Fetches new images. 72 + 24
   if(this.state.images.length === 72){
     //Add state
@@ -64,7 +64,7 @@ fetcher(tag){
   .then((data)=> {
     const photos = data.photos.photo;
     this.jsonParser(photos);
-    this.setState({loading:false});     
+    this.setState({loading:false});//Set the loading spinner to false     
    }).catch(error=>{
   console.error('Error Fetching data from flickr API',error)
    })
