@@ -1,0 +1,47 @@
+/*
+1- Request
+https://api.flickr.com/services/rest/?format=json&nojsoncallback=1&method=flickr.photos.search&api_key=${apiKey}&tags=${tag}&per_page=24
+2-Image URL
+http://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
+*/  
+
+const apiKey  = '18402ceb172cff66fa1f5197f318d75c';
+const tag = 'dog';
+
+
+const fetch = require('node-fetch');
+
+fetch(`https://api.flickr.com/services/rest/?format=json&nojsoncallback=1&method=flickr.photos.search&api_key=${apiKey}&tags=${tag}&per_page=24`).
+then( (response) =>{
+  const jsonResponse = response.json()
+  return jsonResponse
+})
+.then((data)=> {
+    const photos = data.photos.photo;
+    jsonParser(photos);
+});
+
+
+function jsonParser(photos){
+ let farmIds = [];
+ let serverIds = [];
+ let ids = [];
+ let secretIds = [];
+    photos.forEach(element => {
+      farmIds.push(element.farm);
+      serverIds.push(element.server);
+      ids.push(element.id);
+      secretIds.push(element.secret);
+ });
+ imageLinkBuilder(farmIds,serverIds,ids,secretIds);
+}
+
+function imageLinkBuilder(farmIds,serverIds,ids,secretIds){
+    let link;
+    let links = [];
+   for(i=0;i<=farmIds.length;i++){
+        link = `http://farm${farmIds[i]}.staticflickr.com/${serverIds[i]}/${ids[i]}_${secretIds[i]}.jpg`
+        links.push(link);
+   }
+   return links;
+}
